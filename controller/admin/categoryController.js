@@ -9,8 +9,6 @@ exports.getAddCategory = async (req, res) => {
     console.log("error", error);
   }
 };
-
-
 exports.addCategory = async (req, res) => {
     console.log("result");
     try {
@@ -42,8 +40,6 @@ exports.getCategory = async (req, res) => {
 
 }
 
-
-
 exports.deleteCategory = async(req,res)=>{
     try {
      await Category.destroy({where:{id:req.params.id}})
@@ -53,8 +49,6 @@ exports.deleteCategory = async(req,res)=>{
     }
  }
 
-
-
  exports.getEditCategory = async (req, res) => {
     try {
       const data = await Category.findOne({ where: { id: req.params.id } });
@@ -63,9 +57,7 @@ exports.deleteCategory = async(req,res)=>{
       console.log("error", error);
     }
   };
-
-
-
+  
   exports.updateCategory = async (req, res) => {
     const requiredData = {
       name: req.body.name,

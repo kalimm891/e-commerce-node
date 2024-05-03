@@ -15,8 +15,10 @@ const userAuth = require("../middleware/user_auth")
 
 /// product api
 router.post("/add-product", UploadProfilePicture,   product.addProduct);
+router.post("/add-review",  product.addReview);
 router.get("/get-product",  userAuth, product.getProduct);
 router.get("/get-product-by-id/:productId", product.getProductById);
+router.get("/get-review-id/:productId", product.getReviewAdd);
 router.get("/home", product.getHome);
 router.delete('/delete-product/:productId', userAuth, product.deleteProduct);
 

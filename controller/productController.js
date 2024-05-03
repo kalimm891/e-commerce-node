@@ -1,4 +1,4 @@
-    const {Cart, Category, Product, Newuser } = require("../models")
+    const {Cart, review, Category, Product, Newuser } = require("../models")
     const path = require("path")
     const ejs = require("ejs");
     const helper = require("../utils/helper");
@@ -78,20 +78,13 @@ exports.addToCart = async (req, res) => {
 
         // Fetch product details based on productId
         const product = await Product.findByPk(productId);
-        console.log("productkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-
-        console.log(product.price);
-        console.log("productkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-
+        
         if (!product) {
             return res.status(404).json({ status: false, error: 'Product not found' });
         }
-
         // Check if the product is already in the cart for the user
         let cartItem = await Cart.findOne({ where: { productId, userId } });
 
-
-        
         if (cartItem) {
             // If the product already exists in the cart, update the quantity
             cartItem.quantity += 1;
@@ -99,11 +92,6 @@ exports.addToCart = async (req, res) => {
 
             await cartItem.save();
         } else {
-            console.log("productkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk11111111");
-
-        console.log(product.price);
-        console.log("productkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
-
             // If the product is not in the cart, create a new cart entry
             cartItem = await Cart.create({ 
                 productId, 
@@ -112,17 +100,10 @@ exports.addToCart = async (req, res) => {
                 productName: product.name, // Include product name
                 productprice: product.price,
                 // totalPrice: product.price // Initialize total price with product price
-
                  // Include product price
             });
         }
-        // cartItem = await Cart.create({ 
-            
-
-        // });
-
         const totalAmount = await calculateTotalAmount(userId);
-
         const cartItems = await Cart.update( {totalPrice: totalAmount}, { where: { userId } } );
 
 
@@ -219,11 +200,7 @@ exports.getHome = async (req, res) => {
 exports.addnew = async (req, res) => {
     console.log("result2")
     try {
-
-
         return res.render("../views/pages/add_product.ejs", {cartData:"kalim"});
-        // return res.render("pages/product.ejs");
-
     } catch (err) {
         console.log(err)
         return res.status(500).send({
@@ -232,18 +209,54 @@ exports.addnew = async (req, res) => {
     }
 }
 exports.getProductById = async (req, res) => {
+
+
     try {
         const productId = req.params.productId; // Get product ID from request parameters
         
         // Find the product by its ID
-        const product = await Product.findByPk(productId);
+        // const product = await Product.findByPk(productId);
+        const data = await Product.findOne({ where: { id: req.params.productId } });
+
+        let reviewData = await review.findAll({
+            where: { productId: req.params.productId }
+
+            // include: [Product]
+        });
+
+        // const reviewData = await review.findOne({  });
         
-        if (!product) {
+        if (!data) {
             return res.status(404).send({ error: "Product not found" });
         }
-        
+        console.log("reviewData")
+        console.log(reviewData)
+        console.log("reviewData")
         // If the product is found, return it in the response
-        return res.status(200).send(product);
+        // return res.status(200).send(product);
+        // return res.status(200).send(reviewData);
+        return res.render("../views/pages/product_view.ejs", {data, reviewData});
+    } catch (err) {
+        console.error(err);
+        return res.status(500).send({ error: "Internal server error" });
+    }
+};
+
+
+exports.getReviewAdd = async (req, res) => {
+
+
+    try {
+        const productId = req.params.productId; // Get product ID from request parameters
+        
+        // Find the product by its ID
+        // const product = await Product.findByPk(productId);
+        const data = await Product.findOne({ where: { id: req.params.productId } });
+        
+        if (!data) {
+            return res.status(404).send({ error: "Product not found" });
+        }
+        return res.render("../views/pages/add_review.ejs", {data});
     } catch (err) {
         console.error(err);
         return res.status(500).send({ error: "Internal server error" });
@@ -253,8 +266,40 @@ exports.getProductById = async (req, res) => {
 
 
 
+exports.addReview = async (req, res) => {
 
 
+    
+    console.log("result");
+    try {
+        let token = helper.getCookieUser(req);
+
+        // const token = req.headers.authorization;
+        // if (!token) {
+        //     return res.status(401).json({ error: "Authorization token is missing" });
+        //   }
+          const decodedToken = jwt.verify(token, "@eshop");
+          if (!decodedToken) {
+            return res.status(401).json({ error: "Invalid token" });
+          }      
+
+        var { productId, userId , comment, rating} = req.body;
+
+        userId =decodedToken.id;
+        // const { name } = req.body;
+        const newCategory = await review.create({productId, userId, comment, rating});
+        const response = {
+            status: true,
+            data: newCategory
+        } 
+        res.redirect("/api/home");
+    } catch (err) {
+        console.log(err)
+        return res.status(500).send({
+        error: "error"
+        });        
+    }   
+}
 
 
 
@@ -286,20 +331,9 @@ exports.deleteCart = async (req, res) => {
         if (!decodedToken) {
           return res.status(401).json({ error: "Invalid token" });
         }      
-
-
-
-      console.log("decodedToken.id");
-      console.log(decodedToken.id);
-      console.log("decodedToken.id");
-
         const userId = decodedToken.id;
 
-        
 
-        // userId = "4";
-
-        // Delete the product from the database
         await Cart.destroy({
             where: { id: req.params.cartId }
         });
@@ -354,16 +388,7 @@ exports.increamentProduct = async (req, res) => {
         return res.status(500).json({ status: false, error: "Internal server error" });
     } 
 }
-// exports.totalamountUpdate = async (req, res) => {
-//     try {
-//         const cartItems = await Cart.update( {totalPrice: hash},{ where: { userId } });
-//         return res.status(200).json({ status: true, message: ' successfully' });
-//     } catch (err) {
-//         console.error("Error calculating total amount:", err);
-//         return 0;
-//     }
-    
-// }
+
 exports.decreamentProduct = async (req, res) => {
     console.log("result");
     try {
