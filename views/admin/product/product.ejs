@@ -1,0 +1,64 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+  
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 w-100 border border-1">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Product </h3>
+                <a href="/admin/add-product"  style="float: right;">
+                  <button type="button" class="btn btn-primary ">
+                    Create Product
+                  </button>
+                </a>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>S.no</th>
+                      <th>Product Name</th>
+                      <th>Product Price</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% data.forEach((item, index) => { %>
+                    <tr>
+                      <td><%= index + 1 %></td>
+                      <td><%= item.name %></td>
+                      <td><%= item.price %></td>
+                      <td class="d-flex align-items-center justify-content-between">
+                        <a href="/admin/editProduct/<%= item.id %>" class="w-150">
+                          <button type="button" class="btn btn-success">
+                            Edit
+                          </button>
+                        </a>
+                        <a href="/admin/deleteProduct/<%= item.id %>">
+                          <button type="button" class="btn btn-danger">
+                            Delete
+                          </button>
+                        </a>
+                      </td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                  
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  

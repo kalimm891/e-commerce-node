@@ -1,0 +1,49 @@
+
+
+
+
+
+
+
+       <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signup Form</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+</head>
+<body style="margin: 150px;">
+    <form action="/api/sign" method="POST" id="signupForm">
+        <div class="form-group">
+            <label for="exampleInputEmail1">Email address</label>
+            <input type="email" class="form-control" id="exampleInputEmail1" name="email" aria-describedby="emailHelp" placeholder="Enter email" required>
+            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+        </div>
+        <div class="form-group">
+            <label for="exampleInputPassword1">Password</label>
+            <input type="password" class="form-control" id="exampleInputPassword1" name="password" placeholder="Password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Sign Up</button>
+    </form>
+
+    <script>
+        // JavaScript validation for form submission
+        document.getElementById('signupForm').addEventListener('submit', function(event) {
+            var emailInput = document.getElementById('exampleInputEmail1');
+            var passwordInput = document.getElementById('exampleInputPassword1');
+
+            if (!emailInput.checkValidity()) {
+                alert('Please enter a valid email address.');
+                event.preventDefault();
+            }
+
+            if (!passwordInput.checkValidity()) {
+                alert('Please enter a password.');
+                event.preventDefault();
+            }
+        });
+    </script>
+</body>
+</html>

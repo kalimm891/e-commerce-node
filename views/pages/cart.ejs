@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart Page</title>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        .cart-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px; /* Adjust the gap between cards */
+        }
+        .cart-item {
+            flex: 1 0 calc(25% - 20px); /* Set width for four items in one row */
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            box-sizing: border-box;
+        }
+
+        /* Add more styles as needed */
+    </style>
+          <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+          <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <div class="pos-f-t">
+        <div class="collapse" id="navbarToggleExternalContent">
+          <div class="bg-dark p-4">
+            <h4 class="text-white">Collapsed content</h4>
+            <span class="text-muted">Toggleable via the navbar brand.</span>
+          </div>
+        </div>
+        <nav class="navbar navbar-dark bg-dark">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </nav>
+      </div>
+     
+    <h2 style="margin-left: 82px; margin-top: 30px; margin-bottom: 10px;">My Cart</h2>
+    <div class="cart-list"  style="margin-left: 80px; margin-right: 80px;">
+        <% cartData.forEach(cartItem => { %>
+            <div class="cart-item">
+                <p> <%= cartItem.productName %></p>
+                <p>Price: <%= cartItem.productprice %></p>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-*-*">
+                            <p id="quantity-<%= cartItem.productId %>">Quantity: <%= cartItem.quantity %></p>
+    
+                          </div>    
+                      <div class="col-*-*">   
+                        <button style="margin-left: 20px;" onclick="increaseCartItemQuantity('<%= cartItem.productId %>')"  type="button" class="btn btn-info">+</button>
+                        
+                          
+                        <!-- <button style="margin-left: 20px;" onclick="increaseCartItemQuantity('<%= cartItem.productId %>')">+</button> -->
+                    </div>
+                      <div class="col-*-*">
+                        <button style="margin-left: 20px;"  onclick="decreaseCartItemQuantity('<%= cartItem.productId %>')" type="button" class="btn btn-info">-</button>
+
+
+                        <!-- <button style="margin-left: 20px;"  onclick="decreaseCartItemQuantity('<%= cartItem.productId %>')">-</button> -->
+                      </div>
+                    
+                    </div>
+            
+                  </div>
+                  
+
+                <!-- <button onclick="increaseCartItemQuantity('<%= cartItem.productId %>')">+</button>
+                <button onclick="decreaseCartItemQuantity('<%= cartItem.productId %>')">-</button> -->
+                <button onclick="deleteCart('<%= cartItem.id %>')" type="button" class="btn btn-danger">Delete</button>
+
+                <!-- <button onclick="deleteCart('<%= cartItem.id %>')">Delete</button> -->
+            </div>
+        <% }); %>
+    </div>
+
+    <div>
+        <!-- <% if (cartData.isNot) { %>
+            <p>Let me tell you a secret: <b>I am an admin</b></p>
+        <% } %> -->
+        
+        <p style="margin-left: 80px; margin-top: 200px;">Total Price: <%= cartData[0].totalPrice %></p>
+    </div>
+    <!-- <button style="margin-left: 80px;" type="button" class="btn btn-primary">Checkout</button> -->
+    <!-- Add this button to trigger the modal -->
+    <form action="/api/v1/checkout/sessions" method="POST">
+
+    <button     type="submit" class="btn btn-primary" data-toggle="modal" data-target="#checkoutModal" style="margin-left: 80px;">
+    Checkout
+</button>   
+</form>
+
+
+<!-- <form action="/api/v1/checkout/sessions" method="POST">
+    <button type="submit"   >Checkout us</button>
+  </form>
+  <form action="/api/v1/checkout/sessions" method="POST">
+    <!-- <button type="submit"> new Checkout</button> -->
+    <!-- <button type="submit" class="btn btn-primary">Primary</button>
+  </form>  -->
+
+
+
+    <script>
+        function increaseCartItemQuantity(productId) {
+            fetch(`/api/increament-product/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId })
+            })
+            .then(response => {
+                if (response.ok) {
+                    const quantityElement = document.getElementById(`quantity-${productId}`);
+                    const currentQuantity = parseInt(quantityElement.textContent.split(':')[1].trim());
+                    quantityElement.textContent = `Quantity: ${currentQuantity + 1}`;
+
+                    // Handle success (optional)
+                    console.log('Cart item quantity increased successfully.');
+                } else {
+                    // Handle error
+                    console.error('Failed to increase cart item quantity.');
+                }
+            })
+            .catch(error => {
+                console.error('Error increasing cart item quantity:', error);
+            });
+        }
+
+        function decreaseCartItemQuantity(productId) {
+            fetch(`/api/decreament-product/${productId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ productId })
+            })
+            .then(response => {
+                if (response.ok) {
+                    const quantityElement = document.getElementById(`quantity-${productId}`);
+                    const currentQuantity = parseInt(quantityElement.textContent.split(':')[1].trim());
+                    quantityElement.textContent = `Quantity: ${currentQuantity - 1}`;
+                    // Handle success (optional)
+                    console.log('Cart item quantity decreased successfully.');
+                } else {
+                    // Handle error
+                    console.error('Failed to decrease cart item quantity.');
+                }
+            })
+            .catch(error => {
+                console.error('Error decreasing cart item quantity:', error);
+            });
+        }
+
+        function deleteCart(cartId) {
+            if (confirm('Are you sure you want to delete this item from the cart?')) {
+                fetch(`/api/delete-cart/${cartId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete cart item');
+                    }
+                    // Reload the page to reflect changes after successful deletion
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Error deleting cart item:', error);
+                    alert('Failed to delete cart item. Please try again later.');
+                });
+            }
+        }
+
+        function stripeapp() {
+            var stripe = Stripe('pk_test_51P9n6JSIVDUYpW6U8nOGp9SbbAxjh6kSdzYAqn1PVW0Zs4HdhVuo2k4NgYp00L5pesH3brGuB7Dsx6td1f5vxzN300WOAjR6eD', {
+  stripeAccount: '{{CONNECTED_ACCOUNT_ID}}',
+});
+            // fetch(`/api//v1/checkout/sessions`, {
+            //         method: 'POST'
+            //     })
+            //     .then(response => {
+            //         console.error('response ', response);
+
+                    
+            //     })
+            //     .catch(error => {
+            //         console.error('Error deleting cart item:', error);
+            //         // alert('Failed to delete cart item. Please try again later.');
+            //     });
+
+
+            
+        }
+
+        var stripe = Stripe('pk_test_51P9n6JSIVDUYpW6U8nOGp9SbbAxjh6kSdzYAqn1PVW0Zs4HdhVuo2k4NgYp00L5pesH3brGuB7Dsx6td1f5vxzN300WOAjR6eD');
+        var checkoutButton = document.getElementById('checkout-button');
+
+
+
+    checkoutButton.addEventListener('click', function () {
+        
+        // console.log("chalo bhai stripe");
+
+        // fetch('/api/checkout', {
+        //     method: 'POST', 
+        // })
+        // .then(function (response) {
+        //     return response.json();
+        // })
+        // .then(function (session) {
+        //     return stripe.redirectToCheckout({ sessionId: session.clientSecret });
+        // })
+        // .then(function (result) {
+        //     if (result.error) {
+        //         alert(result.error.message);
+        //     }
+        // })
+        // .catch(function (error) {
+        //     console.error('Error:', error);
+        // });
+
+        fetch('/create-checkout-session', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            lineItems: [
+                { price: '45', quantity: 1 },
+                // Add more line items as needed
+            ],
+        }),
+    })
+    .then(function (response) {
+        console.log("response");
+        console.log(response);
+        console.log("response");
+        return response.json();
+    })
+    .then(function (data) {
+        console.log("response");
+        console.log(response);
+        console.log("response");
+        return response.json();
+        return stripe.redirectToCheckout({ sessionId: data.sessionId });
+    })
+    .catch(function (error) {
+        console.error('Error:', error);
+    });
+
+    });
+
+
+
+    
+    </script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://checkout.stripe.com/checkout.js"></script>
+    
+
+</body>
+</html>
+
+
+

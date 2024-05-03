@@ -1,0 +1,63 @@
+<div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+  
+    <!-- Main content -->
+    <section class="content">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-12 w-100 border border-1">
+            <div class="card">
+              <div class="card-header">
+                <h3 class="card-title">Category </h3>
+                <a href="/admin/addCategory"  style="float: right;">
+                  <button type="button" class="btn btn-primary ">
+                    Create Category
+                  </button>
+                </a>
+              </div>
+              <!-- /.card-header -->
+              <div class="card-body">
+                <table id="example2" class="table table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <th>S.no</th>
+                      <th>Category Name</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% data.forEach((item, index) => { %>
+                    <tr>
+                      <td><%= index + 1 %></td>
+                      <td><%= item.name %></td>
+
+                      <td class="d-flex align-items-center justify-content-between">
+                        <a href="/admin/editCategory/<%= item.id %>" class="w-150">
+                          <button type="button" class="btn btn-success">
+                            Edit
+                          </button>
+                        </a>
+                        <a href="/admin/deleteCategory/<%= item.id %>">
+                          <button type="button" class="btn btn-danger">
+                            Delete
+                          </button>
+                        </a>
+                      </td>
+                    </tr>
+                    <% }) %>
+                  </tbody>
+                  
+                </table>
+              </div>
+              <!-- /.card-body -->
+            </div>
+          </div>
+          <!-- /.col -->
+        </div>
+        <!-- /.row -->
+      </div>
+      <!-- /.container-fluid -->
+    </section>
+    <!-- /.content -->
+  </div>
+  

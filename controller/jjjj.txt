@@ -1,0 +1,13 @@
+
+
+
+Query in Join 
+
+if you have two table and show data both table common data, Query
+
+SELECT column_name FROM table1 INNER JOIN 
+employe_id = employId;
+
+
+
+

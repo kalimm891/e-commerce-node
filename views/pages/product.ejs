@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        /* CSS for product cards */
+        .product-container {
+
+            /* margin: 20px; */
+            margin-top: 20px;
+            margin-left: 20px;
+            margin-right: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between; /* Align cards with space between */
+        }
+        .cart-section {
+    display: flex;
+    padding-right: 40px;
+    padding-top: 30px;
+    justify-content: flex-end; /* Align text to the end */
+    /* Add other styling properties as needed */
+}
+
+
+
+
+        .product-card {
+            /* color: rgb(179, 169, 169); */
+            width: calc(25% - 20px); /* Adjust width as needed for 3 cards per row */
+            height: 200px; /* Set height equal to width to create a square card */
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px; /* Add margin between cards */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+            box-sizing: border-box;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card h3 {
+            margin-top: 0;
+        }
+
+        .product-card p {
+            margin-bottom: 0;
+        }
+    </style>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+
+
+      <div class="pos-f-t">
+        <div class="collapse" id="navbarToggleExternalContent">
+          <div class="bg-dark p-4">
+            <h4 class="text-white">Collapsed content</h4>
+            <span class="text-muted">Toggleable via the navbar brand.</span>
+          </div>
+        </div>
+        <nav class="navbar navbar-dark bg-dark">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </nav>
+      </div>
+    
+    <div class="cart-section  ">
+        
+        <div id="cartContent">
+            <!-- Cart content will be dynamically populated here -->
+        </div>
+
+        <a href="/api/get-cart%>">View Cart</a>
+
+    </div>
+    
+
+    <a  style="margin-bottom: 30px; margin-left: 40px;" href="/api/add-new%>">Add Product</a>
+
+
+    
+
+    <h2 style="margin-left: 40px;  margin-top: 10px;">My Product</h2>
+
+    <div class="product-container">
+        <% products.forEach(product => { %>
+            <div id="cards-container">
+                <ion-card>
+                  <ion-img src="https://via.placeholder.com/150"></ion-img>
+                </ion-card>
+                <ion-card>
+                  <ion-img src="https://via.placeholder.com/150"></ion-img>
+                </ion-card>
+                
+              </div>
+              
+            <div class="product-card">
+                <div class="product-details">
+                    <h3><%= product.name %></h3>
+                    <p1>good product and buy</p1>
+
+                    <p>Price: <%= product.price %></p>
+                    <p>id: <%= product.id %></p>
+                </div>
+                <div class="product-image">
+                    <!-- Render product image -->
+                    <img src="<%= product.images %>" style="width: 80px; height: 60px;" alt="<%= product.name %>">
+                </div>
+        
+                
+                <!-- <img src="<%= product.images %>"  style="width: 80px; height: 60px;">
+
+                <h3><%= product.name %></h3>
+                <p>Price: <%= product.price %></p>
+                <p>Price: <%= product.price %></p>
+                <p>id: <%= product.id %></p> -->
+
+
+                <!-- <button onclick="deleteProduct('<%= product.id %>')">Delete</button> -->
+                <button onclick="deleteProduct('<%= product.id %>')" type="button" class="btn btn-danger">Delete</button>
+
+
+
+                <button onclick="addToCart('<%= product.name %>, <%= product.price %>, <%= product.id %>')" type="button" class="btn btn-primary">Add To Cart</button>
+
+
+
+                <!-- <button onclick="addToCart('<%= product.name %>, <%= product.price %>, <%= product.id %>')">Add to Cart</button> -->
+
+
+               
+            </div>
+        <% }); %>
+    </div>
+
+
+
+
+
+    <div class="products">
+        <% products.forEach(product => { %>
+            <!-- Display product details here -->
+        <% }); %>
+    </div>
+    
+   
+    <div class="pagination margin-left:250px "   style="margin-left: 500px;"   >
+        <% if (currentPage > 1) { %>
+            <a href="/api/get-product?page=<%= currentPage - 1 %>" style="margin-left: 20px;" >Previous</a>
+        <% } %>
+    
+        <% for (let i = 1; i <= totalPages; i++) { %>
+            <a style="margin-left: 20px;" href="/api/get-product?page=<%= i %>" class="<%= i === currentPage ? 'active' : '' %>"><%= i %></a>
+        <% } %>
+    
+        <% if (currentPage < totalPages) { %>
+            <a  style="margin-left: 20px;"href="/api/get-product?page=<%= currentPage + 1 %>">Next</a>
+        <% } %>
+    </div>
+    
+
+    <script>
+
+
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                fetch(`/api/delete-product/${productId}`, {
+                    method: 'DELETE'
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to delete product');
+                    }
+                    // Reload the page to reflect changes after successful deletion
+                    window.location.reload();
+                })
+                .catch(error => {
+                    console.error('Error deleting product:', error);
+                    alert('Failed to delete product. Please try again later.');
+                });
+            }
+        }
+
+        function addToCart(productDetails) {
+            const [productName, productPrice, productId] = productDetails.split(',');
+
+            // const price = parseInt(productPrice, 10); // Parse productPrice to an integer
+
+
+
+            console.log(productPrice);
+            console.log(productName);
+            console.log(productId );
+        fetch('/api/add-to-cart', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({productId }) // Send productId in the request body
+        })
+        .then(response => {
+            if (response.ok) {
+                // Handle success
+                alert('Product added to cart successfully.');
+                // Optionally, you can redirect the user to the cart page or update the cart count in the UI
+            } else {
+                // Handle error
+                alert('Failed to add product to cart. Please try again later.');
+            }
+        })
+        .catch(error => {
+            console.error('Error adding product to cart:', error);
+            alert('Failed to add product to cart. Please try again later.');
+        });
+    }
+
+
+    
+
+    </script>
+</body>
+</html>
+
+
+

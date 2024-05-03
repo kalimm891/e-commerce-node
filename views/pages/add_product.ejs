@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+        /* CSS for product cards */
+        .product-container {
+
+            margin: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between; /* Align cards with space between */
+        }
+        .cart-section {
+    display: flex;
+    padding-right: 40px;
+    padding-top: 30px;
+    justify-content: flex-end; /* Align text to the end */
+    /* Add other styling properties as needed */
+    }
+
+
+
+
+        .product-card {
+            /* color: rgb(179, 169, 169); */
+            width: calc(25% - 20px); /* Adjust width as needed for 3 cards per row */
+            height: 200px; /* Set height equal to width to create a square card */
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 20px; /* Add margin between cards */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: box-shadow 0.3s ease-in-out;
+            box-sizing: border-box;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .product-card h3 {
+            margin-top: 0;
+        }
+
+        .product-card p {
+            margin-bottom: 0;
+        }
+    </style>
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+      <div class="pos-f-t">
+        <div class="collapse" id="navbarToggleExternalContent">
+          <div class="bg-dark p-4">
+            <h4 class="text-white">Collapsed content</h4>
+            <span class="text-muted">Toggleable via the navbar brand.</span>
+          </div>
+        </div>
+        <nav class="navbar navbar-dark bg-dark">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggleExternalContent" aria-controls="navbarToggleExternalContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+        </nav>
+      </div>
+
+    
+    <!-- <div class="cart-section  ">
+        
+        <div id="cartContent">
+            <!-- Cart content will be dynamically populated here -->
+        </div>
+
+
+
+    </div> 
+    
+ <!-- <h1>Product Page</h1> -->
+    <h2 style="margin-left: 75px; margin-top: 80px; margin-bottom: 20px;">Add New Product</h2>
+
+
+    <!-- <button onclick="viewCart()">View Cart</button> -->
+
+<form action="/api/add-product" method="POST" enctype="multipart/form-data" style="margin-left: 80px;">
+        <label for="name">Product Name:</label>
+        <input type="text" id="name" name="name" required>
+        <label for="price">Price:</label>
+        <input type="text" id="price" name="price" required>
+        <label for="image">Image:</label>
+        <input type="file" id="image" name="image" accept="image/*" required>
+    
+        <!-- <button type="submit">Add Product</button> -->
+        <button type="submit" class="btn btn-success">Add Product</button>
+
+    </form> 
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+
+
