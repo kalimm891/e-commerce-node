@@ -23,16 +23,11 @@
     <script src="js/modernizr.js"></script>
   </head>
   <body>
-
-    
   </div>
-  
-
     <div class="preloader-wrapper">
       <div class="preloader">
       </div>
     </div>
-
     <div class="search-popup">
       <div class="search-popup-container">
 
@@ -207,7 +202,7 @@
                     </div>
                     <div class="product-detail">
                       <h3 class="product-title">
-                        <a href="single-product.html"><%= product.name %></a>
+                        <a href=""><%= product.name %></a>
                       </h3>
                     </div>
                   </div>
@@ -520,10 +515,8 @@
         <div class="tab-content">
           <div id="all" data-tab-content class="active">
             <div class="row d-flex flex-wrap">
-
               <div class="products">
                 <% products.forEach(product => { %>
-          
                   <div class="product-item col-lg-3 col-md-6 col-sm-6">
                     <div class="image-holder">
                       <img src="images/selling-products1.jpg" alt="Books" class="product-image">
@@ -544,7 +537,7 @@
                     </div>
                     <div class="product-detail">
                       <h3 class="product-title">
-                        <a href=""><%= product.name %></a>
+                        <a href="/api/get-product-by-id/<%= product.id %>"><%= product.name %></a>
                       </h3>
                       <div class="item-price text-primary">$ <%= product.price %></div>
                     </div>
@@ -839,7 +832,7 @@
 
     <hr>
     
-
+<!-- 
     <section id="shipping-information">
       <hr>
       <div class="container">
@@ -879,9 +872,9 @@
         </div>
       </div>
       <hr>
-    </section>
+    </section> -->
 
-    <footer id="footer">
+    <!-- <footer id="footer">
       <div class="container">
         <div class="footer-menu-list">
           <div class="row d-flex flex-wrap justify-content-between">
@@ -979,7 +972,7 @@
         </div>
       </div>
       <hr>
-    </footer>
+    </footer> -->
 
     <div id="footer-bottom">
       <div class="container">

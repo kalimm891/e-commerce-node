@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Product Details</title>
+    <style>
+      /* Add your CSS styles here */
+      .card {
+        width: 80%; /* Adjust as needed */
+        margin: 0 auto; /* Center the card horizontally */
+        background-color: #f0f0f0; /* Example background color */
+        padding: 20px; /* Add padding to the card */
+        border-radius: 10px; /* Optional: Add border radius for rounded corners */
+        position: relative; /* Ensure relative positioning for the button */
+      }
+      .card review-card {
+        width: 80%; /* Adjust as needed */
+        margin: 0 auto; /* Center the card horizontally */
+        background-color: #f0f0f0; /* Example background color */
+        padding: 20px; /* Add padding to the card */
+        border-radius: 10px; /* Optional: Add border radius for rounded corners */
+        position: relative; /* Ensure relative positioning for the button */
+      }
+
+      .btn-wrapper {
+        position: absolute;
+        top: 10px; /* Adjust top position as needed */
+        right: 10px; /* Adjust right position as needed */
+      }
+    </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="content-wrapper">
+      <h1 class="card-title" style="margin-left: 130px;">Product Details</h1>
+      <section class="content py-4">
+        <div class="container-fluid">
+          <div class="row d-flex justify-content-center align-items-center">
+            <div class="col-md-7">
+              <div class="card card-primary">
+                <div class="card-header">
+                  
+                </div>
+                <div class="card-body">
+                  <h3>Product Name - <%= data.name %></h3>
+                  <h3>Product Price - <%= data.price %></h3>
+                 
+                  <!-- Add other product details here -->
+                </div>
+                <div class="btn-wrapper">
+                    <a href="/api/get-review-id/<%= data.id %>">
+                        <button type="button" class="btn btn-danger">
+                          Add Review
+                        </button>
+                      </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <h1 style="margin-left: 130px;">  Review</h1>
+      <% reviewData.forEach((item, index) => { %>
+        <div class="card review-card"  style="margin-top: 20px;">
+            <div class="card-body">
+                <!-- <h5 class="card-title">Review <%= index + 1 %></h5> -->
+                <p class="card-text"><strong>User:</strong> <%= item.userId %></p>
+                <p class="card-text"><strong>Rating:</strong> <%= item.rating %></p>
+                <p class="card-text"><strong>Comment:</strong> <%= item.comment %></p>
+            </div>
+        </div>
+    <% }) %>
+    
+
+    </div>
+  </div>
+  <!-- Add your JavaScript files here -->
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+</html>
+ 
